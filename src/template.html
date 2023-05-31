@@ -1,0 +1,36 @@
+<html>
+  <script>
+    window.addEventListener('load', event => {
+      const saveCanvas = () => {
+        var canvasImage = canvas.toDataURL('image/png');
+
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+          let a = document.createElement('a');
+          a.href = window.URL.createObjectURL(xhr.response);
+          a.download = 'image.png';
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        };
+        xhr.open('GET', canvasImage);
+        xhr.send();
+      };
+
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.onload = function () {
+        ctx.drawImage(img, 0, 0);
+
+        saveCanvas();
+      };
+      img.src = '%DATAURL%';
+    });
+  </script>
+  <body>
+    <canvas height="%HEIGHT%" width="%WIDTH%" id="canvas" />
+  </body>
+</html>
